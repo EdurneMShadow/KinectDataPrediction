@@ -1,4 +1,4 @@
-function [betas] = fit_linear_gaussian(Y,X)
+function [sigma, betas] = fit_linear_gaussian(Y,X)
 %
 %  Input:
 %     Y: vector Dx1 with the observations for the variable
@@ -31,4 +31,19 @@ for i = 1:size(X)(2)+1
   end
 end
 betas = A\b;
+b = betas;
+y_part = mean(Y.*Y)-mean(Y)*mean(Y);
+suma = 0;
+b(1)=[];
+for i=1:size(X)(2)
+  for j=1:size(X)(2)
+    suma = suma + b(i)*b(j)*(mean(X(:,i).*X(:,j))-mean(X(:,i))*mean(X(:,j)));
+  end
+end
+sigma = sqrt(y_part-suma);
+
+
+
+
+
    
