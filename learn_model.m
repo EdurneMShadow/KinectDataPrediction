@@ -31,8 +31,50 @@ function model = learn_model(dataset, labels, Graph)
 %            model.jointparts(i).sigma: as above
 %
 %
-
+%NAÏVE BAYES
 if nargin<3
+  model = struct()
+  model.connectivity = [];
+  %
+  indices = [min(labels):1:max(labels)];
+  ocurrencias = histc(labels, indices);
+  cont = 1;
+  
+  for i = 1:length(ocurrencias)
+    if ocurrencias(i)!=0
+      model.class_priors(cont,1) = ocurrencias(i)/length(labels);
+      cont++;
+    end
+  end
+  %
+  n_clase = unique(labels);
+  for ic = 1: length(n_clase) %CLASES
+    for i = 1:size(dataset)(1) %ARTICULACIONES
+      for j = 1:size(dataset)(2) %VARIABLES (X,Y,Z)
+        [model.jointparts(i).means(j,ic),model.jointparts(i).sigma(j,ic)] = fit_gaussian(dataset(i,j,[labels==n_clase(ic)]));
+      end
+    end
+  end
+  %
+else
+  model.connectivity = Graph;
+  indices = [min(labels):1:max(labels)];
+  ocurrencias = histc(labels, indices);
+  cont =1;
+  for i = 1:length(ocurrencias)
+    if ocurrencias(i)!=0
+      model.class_priors(cont) = ocurrencias(i)/length(labels);
+      cont++;
+    end
+  end
+  %
+  [sigma,betas] = fit_linear_gaussian(dataset(i,j,[inicio_clase:fin_clase]),dataset(padres(i),:,[inicio_clase:fin_clase]));
+  model.jointparts(i).betas = betas;
+  model.jointparts(i).sigma = sigma;
+end
 
-model = struct()
-model.connectivity = Graph;
+
+
+
+
+
