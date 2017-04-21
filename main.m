@@ -1,10 +1,11 @@
 load data;
 skel_model;
-resultados = zeros(100:2);
-for i = 1:100
+resultados = zeros(1:2);
+
+for i = 1:10
   %División en train y test
   rp = randperm(length(individuals));
-  index_train = ismember(individuals, rp(1:60));
+  index_train = ismember(individuals, rp(1:round(length(individuals)*0.6)));
   index_test = ~index_train;
 
   %Entrenamiento de los modelos
@@ -19,7 +20,7 @@ for i = 1:100
   [v_bayes,ii_bayes]=max(p_bayes,[],2);
   ii_bayes(ii_bayes==4)=8;
   resultados(i,1) = mean(labels(index_test)==ii_bayes);
-  
+
   [v_lg,ii_lg]=max(p_lg,[],2);
   ii_lg(ii_lg==4)=8;
   resultados(i,2) = mean(labels(index_test)==ii_lg);
