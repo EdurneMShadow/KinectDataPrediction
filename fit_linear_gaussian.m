@@ -40,7 +40,7 @@ for i=1:size(X)(2)
     suma = suma + b(i)*b(j)*(mean(X(:,i).*X(:,j))-mean(X(:,i))*mean(X(:,j)));
   end
 end
-sigma = sqrt(y_part-suma);
+sigma = sqrt(y_part-suma+0.01);
 
 
 
