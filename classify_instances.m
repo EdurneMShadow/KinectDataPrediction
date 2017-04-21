@@ -12,3 +12,10 @@ function probs = classify_instances(instances, model)
 %  Important: to avoid underflow numerical issues this computations should
 %  be performed in log space
 %
+
+probs = zeros(size(instances)(1), length(model.class_priors));
+
+for i = 1:size(instances)(3)
+  probs(i,:) = compute_loglikelihood(instances(:,:,i), model);
+end
+probs = exp(probs);

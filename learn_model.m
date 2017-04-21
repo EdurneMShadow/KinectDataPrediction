@@ -73,8 +73,8 @@ else
   Graph = Graph +1;
   size_variables = size(dataset)(2);
   for ic = 1: length(n_clase) %CLASES
-    size_betas = 0;
     for i = 1:size(dataset)(1) %ARTICULACIONES
+      size_betas = 0;
       for j = 1:size_variables %VARIABLES (X,Y,Z)
         if i == 1
           [model.jointparts(i).betas(j,ic),model.jointparts(i).sigma(j,ic)] = fit_gaussian(dataset(i,j,[labels==n_clase(ic)]));
